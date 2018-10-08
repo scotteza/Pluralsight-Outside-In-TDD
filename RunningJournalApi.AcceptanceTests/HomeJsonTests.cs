@@ -9,21 +9,22 @@ namespace RunningJournalApi.AcceptanceTests
     public class HomeJsonTests
     {
         private Uri baseAddress;
-        private HttpSelfHostConfiguration httpSelfHostConfiguration;
-        private HttpSelfHostServer httpSelfHostServer;
+        private HttpSelfHostConfiguration config;
+        private HttpSelfHostServer server;
 
         [SetUp]
         public void SetUp()
         {
             baseAddress = new Uri("http://localhost:9876");
-            httpSelfHostConfiguration = new HttpSelfHostConfiguration(baseAddress);
-            httpSelfHostServer = new HttpSelfHostServer(httpSelfHostConfiguration);
+            config = new HttpSelfHostConfiguration(baseAddress);
+            new Bootstrap().Configure(config);
+            server = new HttpSelfHostServer(config);
         }
 
         [Test]
         public void GetResponseReturnsCorrectStatusCode()
         {
-            using (var client = new HttpClient(httpSelfHostServer))
+            using (var client = new HttpClient(server))
             {
                 client.BaseAddress = baseAddress;
 
