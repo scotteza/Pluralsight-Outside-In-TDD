@@ -10,5 +10,10 @@ namespace RunningJournalApi
         {
             return this.Request.CreateResponse();
         }
+
+        public HttpResponseMessage Post()
+        {
+            return this.Request.CreateResponse();
+        }
     }
 }

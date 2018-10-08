@@ -1,7 +1,6 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Net.Http;
-using System.Web.Http.SelfHost;
+using NUnit.Framework;
 
 namespace RunningJournalApi.AcceptanceTests
 {
@@ -9,11 +8,31 @@ namespace RunningJournalApi.AcceptanceTests
     public class HomeJsonTests
     {
         [Test]
-        public void GetResponseReturnsCorrectStatusCode()
+        public void GetReturnsResponseWithCorrectStatusCode()
         {
             using (var client = HttpClientFactory.Create())
             {
                 var response = client.GetAsync("").Result;
+
+                Assert.IsTrue(
+                    response.IsSuccessStatusCode,
+                    "Actual status code: " + response.StatusCode);
+            }
+        }
+
+        [Test]
+        public void PostReturnsResponseWithCorrectStatusCode()
+        {
+            using (var client = HttpClientFactory.Create())
+            {
+                var json = new
+                {
+                    time = DateTimeOffset.Now,
+                    distance = 8500,
+                    Duration = TimeSpan.FromMinutes(44)
+                };
+
+                var response = client.PostAsJsonAsync("", json).Result;
 
                 Assert.IsTrue(
                     response.IsSuccessStatusCode,
