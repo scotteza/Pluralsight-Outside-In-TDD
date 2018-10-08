@@ -20,6 +20,7 @@ namespace RunningJournalApi.AcceptanceTests
         public void GetResponseReturnsCorrectStatusCode()
         {
             var config = new HttpSelfHostConfiguration(baseAddress);
+            new BootStrap().Configure(config);
             var server = new HttpSelfHostServer(config);
 
             using (var client = new HttpClient(server))
