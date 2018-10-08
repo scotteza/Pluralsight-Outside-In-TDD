@@ -8,25 +8,11 @@ namespace RunningJournalApi.AcceptanceTests
     [TestFixture]
     public class HomeJsonTests
     {
-        private Uri baseAddress;
-
-        [SetUp]
-        public void SetUp()
-        {
-            baseAddress = new Uri("http://localhost:9876");
-        }
-
         [Test]
         public void GetResponseReturnsCorrectStatusCode()
         {
-            var config = new HttpSelfHostConfiguration(baseAddress);
-            new BootStrap().Configure(config);
-            var server = new HttpSelfHostServer(config);
-
-            using (var client = new HttpClient(server))
+            using (var client = HttpClientFactory.Create())
             {
-                client.BaseAddress = baseAddress;
-
                 var response = client.GetAsync("").Result;
 
                 Assert.IsTrue(
