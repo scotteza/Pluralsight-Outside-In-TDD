@@ -1,26 +1,30 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Net.Http;
+using System.Web.Http.SelfHost;
 
 namespace RunningJournalApi.AcceptanceTests
 {
     [TestFixture]
     public class HomeJsonTests
     {
-        private Uri clientBaseAddress;
+        private Uri baseAddress;
 
         [SetUp]
         public void SetUp()
         {
-            clientBaseAddress = new Uri("http://localhost:9876");
+            baseAddress = new Uri("http://localhost:9876");
         }
 
         [Test]
         public void GetResponseReturnsCorrectStatusCode()
         {
-            using (var client = new HttpClient())
+            var config = new HttpSelfHostConfiguration(baseAddress);
+            var server = new HttpSelfHostServer(config);
+
+            using (var client = new HttpClient(server))
             {
-                client.BaseAddress = clientBaseAddress;
+                client.BaseAddress = baseAddress;
 
                 var response = client.GetAsync("").Result;
 
