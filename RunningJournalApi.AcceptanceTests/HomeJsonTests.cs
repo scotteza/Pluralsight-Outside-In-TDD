@@ -1,14 +1,26 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System;
 using System.Net.Http;
-using Newtonsoft.Json;
 
 namespace RunningJournalApi.AcceptanceTests
 {
     [TestFixture]
     public class HomeJsonTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            new BootStrap().InstallDatabase();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            new BootStrap().UninstallDatabase();
+        }
+
         [Test]
         public void Get_Returns_Response_With_Correct_Status_Code()
         {
